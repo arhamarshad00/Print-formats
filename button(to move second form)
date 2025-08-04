@@ -1,0 +1,13 @@
+frappe.ui.form.on('Complaint Management', {
+    refresh: function(frm) {
+        if (frm.doc.visit_status === "Work Order" && !frm.doc.work_order_no) {
+            frm.add_custom_button("Create Sales Order", () => {
+                frappe.new_doc("Sales Order", {
+                    customer: frm.doc.customer_id,
+                    custom_new_order : "Work Order",
+                    custom_complaint_management_no: frm.doc.name,
+                });
+            }, __("Actions"));
+        }
+    }
+});
