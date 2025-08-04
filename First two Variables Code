@@ -1,0 +1,23 @@
+frappe.ui.form.on("Item", {
+    custom_parent_group(frm) {
+        if (frm.doc.custom_parent_group) {
+            const abbr = get_abbreviation(frm.doc.custom_parent_group);
+            frm.set_value("custom_parent_group_abr", abbr);
+        }
+    },
+
+    item_group(frm) {
+        if (frm.doc.item_group) {
+            const abbr = get_abbreviation(frm.doc.item_group);
+            frm.set_value("custom_item_code_abr", abbr);
+        }
+    }
+});
+
+function get_abbreviation(text) {
+    const words = text.trim().split(" ");
+    if (words.length === 1) {
+        return words[0].charAt(0).toUpperCase();
+    }
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+}
