@@ -1,0 +1,26 @@
+frappe.ui.form.on('Sales Invoice', {
+    before_save: function(frm) {
+        if (frm.doc.custom_income_account) {
+            frappe.call({
+                method: 'frappe.client.get',
+                args: {
+                    doctype: 'Billing List', // Make sure this is the correct Doctype
+                    name: frm.doc.custom_income_account,
+                },
+                callback: function(r) {
+                    if (r.message) {
+                        const account = r.message.income_account;
+                        const hs_code = r.message.hs_code;
+                        (frm.doc.items || []).forEach(row => {
+                            frappe.model.set_value(row.doctype, row.name, "income_account", account);
+                            frappe.model.set_value(row.doctype, row.name, "hs_code", hs_code);
+                        });
+
+                        frm.refresh_field("items");
+                    }
+                }
+            });
+        }
+    }
+});
+
