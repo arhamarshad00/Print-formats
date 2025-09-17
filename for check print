@@ -1,0 +1,43 @@
+<style>
+    body {
+        font-family: "Courier New", monospace; /* Fixed width font */
+        font-size: 14px;
+        line-height: 22px;
+    }
+    .payee {
+        position: absolute;
+        top: 80px;   /* adjust as per cheque layout */
+        left: 100px;
+    }
+    .amount-words {
+        position: absolute;
+        top: 120px;  /* adjust */
+        left: 100px;
+        width: 600px;  /* so text wraps */
+    }
+    .amount-figures {
+        position: absolute;
+        top: 123px;  /* adjust */
+        right: 126px;
+    }
+    .date {
+        position: absolute;
+        top: 40px;   /* adjust */
+        right: 100px;
+    }
+</style>
+
+<div class="date">
+    {{ frappe.utils.formatdate(doc.posting_date, "ddMMyyyy") }}
+</div>
+
+<div class="payee">
+    {{ doc.supplier_name }}
+</div>
+
+<div class="amount-words">
+    {{ frappe.utils.money_in_words(doc.grand_total) }}
+</div>
+
+<div class="amount-figures">
+    {{ "{:,.2f}".format(doc.grand_total) }}</div>
